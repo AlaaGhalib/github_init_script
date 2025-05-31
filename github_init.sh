@@ -23,7 +23,7 @@ parse_args() {
         ;;
       -v)
         if [[ "$2" != "public" && "$2" != "private" ]]; then
-          echo "❌ Fel: -v måste vara 'public' eller 'private'"
+          echo " Fel: -v måste vara 'public' eller 'private'"
           exit 1
         fi
         REPO_VISIBILITY="$2"
@@ -35,7 +35,7 @@ parse_args() {
         exit 0
         ;;
       *)
-        echo "❌ Okänd flagga: $1"
+        echo " Okänd flagga: $1"
         exit 1
         ;;
     esac
@@ -47,7 +47,7 @@ main() {
   parse_args "$@"
 
   if [[ -z "$REPO_NAME" || -z "$REPO_DESC" || -z "$REPO_VISIBILITY" || -z "$REPO_LANG" ]]; then
-    echo "❌ Du måste ange -n, -d, -l och -v"
+    echo " Du måste ange -n, -d, -l och -v"
     exit 1
   fi
 
@@ -57,14 +57,14 @@ main() {
     VISIBILITY_FLAG="--public"
   fi
 
-  echo "📁 Skapar repo: $REPO_NAME ($REPO_VISIBILITY)"
+  echo " Skapar repo: $REPO_NAME ($REPO_VISIBILITY)"
   mkdir "$REPO_NAME"
   cd "$REPO_NAME" || exit 1
 
   echo "# $REPO_NAME" > README.md
   echo -e "\n📄 Beskrivning: $REPO_DESC" >> README.md
   if [[ -n "$REPO_LANG" ]]; then
-    echo "💻 Språk: $REPO_LANG" >> README.md
+    echo " Språk: $REPO_LANG" >> README.md
   fi
 
   git init
