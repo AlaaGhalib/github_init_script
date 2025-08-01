@@ -1,4 +1,16 @@
 # github_init_script
+# ny version som även skapar nödvändiga filer  
+
+## Projektstruktur
+<REPO_NAME>/
+├── src/
+│ ├── main/
+│ │ └── java/
+│ │ └── Main.java
+│ └── test/
+│ └── java/
+├── .gitignore
+└── README.md
 
 Ett Bash-skript som automatiserar skapandet av ett GitHub-repository med GitHub CLI.
 
@@ -21,4 +33,5 @@ Ett Bash-skript som automatiserar skapandet av ett GitHub-repository med GitHub 
 Kör skriptet från terminalen:
 
 ```bash
+chmod +x github_init.sh       # Gör scriptet körbart (behövs bara en gång)
 ./github_init.sh -n <repo-namn> -d "<beskrivning>" -l <språk> -v <public|private>

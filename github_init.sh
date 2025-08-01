@@ -61,16 +61,75 @@ main() {
   mkdir "$REPO_NAME"
   cd "$REPO_NAME" || exit 1
 
+  # Create README.md
   echo "# $REPO_NAME" > README.md
   echo -e "\n📄 Beskrivning: $REPO_DESC" >> README.md
-  if [[ -n "$REPO_LANG" ]]; then
-    echo " Språk: $REPO_LANG" >> README.md
-  fi
+  echo " Språk: $REPO_LANG" >> README.md
 
+if [[ "$REPO_LANG" == "Java" ]]; then
+  echo " Skapar Java-projektstruktur..."
+
+  mkdir -p src/main/java src/test/java
+
+  cat > .gitignore <<EOL
+# Compiled class files
+*.class
+
+# Logs
+*.log
+
+# Maven target directory
+target/
+
+# Eclipse files
+.project
+.classpath
+
+# IntelliJ files
+.idea/
+*.iml
+*.iws
+
+EOL
+
+  cat > src/main/java/Main.java <<EOL
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello, $REPO_NAME!");
+    }
+}
+EOL
+
+  # Skapa build.sh
+  cat > build.sh <<'EOL'
+#!/usr/bin/env bash
+
+echo "Kompilerar Java-koden..."
+mkdir -p build/classes
+javac -d build/classes $(find src/main/java -name "*.java")
+
+if [[ $? -ne 0 ]]; then
+  echo "Kompilering misslyckades!"
+  exit 1
+fi
+
+echo "Kör programmet..."
+java -cp build/classes Main
+EOL
+
+  chmod +x build.sh
+
+else
+  echo " Obs: Projektstruktur för språket '$REPO_LANG' är inte implementerad."
+fi
+
+
+  # Initialize git repo
   git init
   git add .
-  git commit -m "Initial commit"
+  git commit -m "Initial commit with project structure"
 
+  # Create GitHub repo and push
   gh repo create "$REPO_NAME" --description "$REPO_DESC" $VISIBILITY_FLAG --source=. --remote=origin --push
 }
 
